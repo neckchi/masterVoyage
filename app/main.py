@@ -12,9 +12,7 @@ import uvicorn
 import atexit
 
 
-
-
-#👇 Initalize the Oracle ConnectionPool before starting the application
+# 👇 Initalize the Oracle ConnectionPool before starting the application
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     queue_lister.start()
@@ -25,21 +23,26 @@ async def lifespan(app: FastAPI):
 
 #
 queue_lister = log_queue_listener()
-app = FastAPI(lifespan=lifespan,docs_url=None, redoc_url=None)
+app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None)
 app.add_middleware(GZipMiddleware, minimum_size=4000)
-app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_credentials=True,allow_methods=['GET'],allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=[
+                   "*"], allow_credentials=True, allow_methods=['GET'], allow_headers=["*"])
 app.include_router(voyage_router.router)
 app.include_router(poc_schedule.router)
+
 
 @app.get("/docs", include_in_schema=False)
 def overridden_swagger():
     return get_swagger_ui_html(openapi_url="/openapi.json", title="Vessel Voyage API",
                                swagger_favicon_url="https://ca.kuehne-nagel.com/o/kn-lgo-theme/images/favicons/favicon.ico")
 
+
 @app.get("/redoc", include_in_schema=False)
 def overridden_redoc():
     return get_redoc_html(openapi_url="/openapi.json", title="Vessel Voyage API",
                           redoc_favicon_url="https://ca.kuehne-nagel.com/o/kn-lgo-theme/images/favicons/favicon.ico")
+
+
 def custom_openapi():
     """
     By using this way,this application won't have to generate the schema every time a user opens our API docs.
@@ -61,10 +64,8 @@ def custom_openapi():
     return app.openapi_schema
 
 
-
 app.openapi = custom_openapi
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app",host="0.0.0.0", port=8080, timeout_keep_alive=60, reload=True)
-
-
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8080,
+                timeout_keep_alive=60, reload=True)
