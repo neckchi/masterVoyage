@@ -11,8 +11,29 @@ class PortEvent(StrEnum):
     pas = 'Pass'
 
 
-CarrierCode = Literal['MSCU', 'CMDU', 'ANNU', 'APLU', 'CHNL', 'CSFU', 'ONEY', 'HDMU', 'ZIMU',
-                      'MAEU', 'MAEI', 'OOLU', 'COSU', 'HLCU', 'YMJA', 'YMLU', 'YMPR', 'EGLV', 'SMLM', 'WHLC', 'IAAU']
+class CarrierCode(StrEnum):
+    MSCU = 'MSCU'
+    CMDU = 'CMDU'
+    ANNU = 'ANNU'
+    APLU = 'APLU'
+    CHNL = 'CHNL'
+    CSFU = 'CSFU'
+    ONEY = 'ONEY'
+    HDMU = 'HDMU'
+    ZIMU = 'ZIMU'
+    MAEU = 'MAEU'
+    MAEI = 'MAEI'
+    OOLU = 'OOLU'
+    COSU = 'COSU'
+    HLCU = 'HLCU'
+    YMJA = 'YMJA'
+    YMLU = 'YMLU'
+    YMPR = 'YMPR'
+    EGLV = 'EGLV'
+    SMLM = 'SMLM'
+    WHLC = 'WHLC'
+    IAAU = 'IAAU'
+
 
 
 class QueryParams(BaseModel):

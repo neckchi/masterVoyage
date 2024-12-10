@@ -10,6 +10,7 @@ import queue
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file='./app/.env', env_file_encoding='utf-8')
+    sql_file_path: SecretStr
     db_user: SecretStr
     db_pw: SecretStr
     host: SecretStr

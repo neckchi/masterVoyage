@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query, Depends, Request
 from app.api.schemas.schema_request import QueryParams
 from app.api.schemas.vv_response_schema import Product
 from app.api.handler.vessel_voyage.voyage_handler import voyage_finder
+from app.internal.setting import Settings, get_settings
 from app.storage import oracle_db_pool
 from app.internal.security import basic_auth
 from typing import Annotated
@@ -18,8 +19,10 @@ router = APIRouter(prefix='/voyage', tags=["API Vessel Voyage"])
 async def get_voyage(request: Request,
                      query_params: Annotated[QueryParams, Query()],
                      credentials=Depends(basic_auth),
+                     settings: Settings = Depends(get_settings),
                      conn=Depends(oracle_db_pool.get_connection)):
-    native_sql = Path("./app/api/sql_query/vessel_voyage.sql").read_text()
+    file_path = settings.sql_file_path.get_secret_value()
+    native_sql = Path(file_path).read_text()
     logging.info(
         f'Received a request with following parameters:{request.url.query}')
     placeholder: dict = {"scac": query_params.scac,
