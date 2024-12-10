@@ -1,1 +1,1 @@
-**Master Vessel Schedule API(Proof Of Concept)**
+**Master Vessel Schedule API - Proof Of Concept**
