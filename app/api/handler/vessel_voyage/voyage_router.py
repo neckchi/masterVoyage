@@ -21,7 +21,7 @@ async def get_voyage(request: Request,
                      credentials=Depends(basic_auth),
                      settings: Settings = Depends(get_settings),
                      conn=Depends(oracle_db_pool.get_connection)):
-    file_path = settings.sql_file_path.get_secret_value()
+    file_path = settings.vv_file_path.get_secret_value()
     native_sql = Path(file_path).read_text()
     logging.info(
         f'Received a request with following parameters:{request.url.query}')

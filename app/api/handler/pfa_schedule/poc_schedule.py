@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from app.api.schemas import poc_schedule_schema, schema_request
 from app.storage import oracle_db_pool
 from app.internal.security import basic_auth
+from app.internal.setting import Settings, get_settings
 from uuid import uuid5, NAMESPACE_DNS, UUID
 from pathlib import Path
 from datetime import datetime, timedelta, date
@@ -34,8 +35,10 @@ async def get_voyage(point_from: str = Query(alias='pointFrom', default=..., max
                      page: int = Query(
                          alias='offset', default=0, description='the offset for pagination start from 0 by default. each page contains 30 result'),
                      credentials=Depends(basic_auth),
+                     settings: Settings = Depends(get_settings),
                      conn=Depends(oracle_db_pool.get_connection)):
-    native_sql = Path("./app/sql_schedule/schedule_generator.sql").read_text()
+    file_path = settings.poc_file_path.get_secret_value()
+    native_sql = Path(file_path).read_text()
     product_id: UUID = uuid5(
         NAMESPACE_DNS, f'{scac}-p2p-api-{point_from}{point_to}{etd_start}{etd_end}{service_code}{page}')
     placeholder: dict = {"row_offset": (page*BATCH_SIZE), "max_rows": BATCH_SIZE, "pol": point_from, "pod": point_to,

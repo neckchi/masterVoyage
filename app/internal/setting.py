@@ -1,7 +1,7 @@
 from os import path
 from functools import cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import SecretStr
+from pydantic import SecretStr,FilePath
 from logging.handlers import QueueHandler, QueueListener
 import logging.config
 import queue
@@ -10,7 +10,8 @@ import queue
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file='./app/.env', env_file_encoding='utf-8')
-    sql_file_path: SecretStr
+    vv_file_path: SecretStr
+    poc_file_path: SecretStr
     db_user: SecretStr
     db_pw: SecretStr
     host: SecretStr
